@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "SwervyBoy"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}
