@@ -5,7 +5,6 @@ import static frc.robot.SwerveDrive.DriveMode.TELEOP;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
 import org.slf4j.Logger;

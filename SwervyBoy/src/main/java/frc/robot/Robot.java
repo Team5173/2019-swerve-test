@@ -11,9 +11,20 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
-  @Override
+  Joystick Stick;
+  SwerveDriveConfig config;
+  SwerveDrive Swerve;
   public void robotInit() {
+    config = new SwerveDriveConfig();
+    config.wheels
+    config.summarizeTalonErrors
+    config.robotPeriod
+    config.length
+    config.gyroRateCoeff
+    config.gyroLoggingEnabled
+    config.gyro
+    Swerve = new SwerveDrive(config);
+    Stick = new Joystick(1);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -21,6 +32,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+
+    double value;
+    value = Stick.getX();
+    value = Stick.getY();
+    value = Stick.getZ();
   }
 
   @Override
