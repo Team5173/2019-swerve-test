@@ -11,9 +11,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,10 +27,11 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final Compressor c = new Compressor(1);
-  private final Solenoid wooow = new Solenoid (1);
-  private final Solenoid woow = new Solenoid (2);
-  private final Solenoid wow = new Solenoid (3);
-  
+  DoubleSolenoid wooow = new DoubleSolenoid (1,2);
+  DoubleSolenoid woow = new DoubleSolenoid (1,2);
+  DoubleSolenoid wow = new DoubleSolenoid (1,2);
+  XboxController controller = new XboxController(0);
+
   {
 
     c.start();
@@ -100,7 +100,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-  }
+    if(controller.getAButton() == true) {
+      wow.set(DoubleSolenoid.Value.kForward);
+    } else {
+
+      if(controller.getAButton() && wow.(DoubleSolenoid.Value.kForward) == true);
+    }
+    if(controller.getBButton() == true) {
+      woow.set(DoubleSolenoid.Value.kForward);
+    }
+    if(controller.getXButton() == true) {
+      wooow.set(DoubleSolenoid.Value.kForward);
+    }
+    }
+
+
+    
+
 
   /**
    * This function is called periodically during test mode.
