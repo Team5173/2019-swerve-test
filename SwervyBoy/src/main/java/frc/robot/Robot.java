@@ -31,6 +31,9 @@ public class Robot extends TimedRobot {
 
   ADIS16448_IMU gyro;
 
+  Wheel[] wheels;
+  Wheel LFWheel,RFWheel,LBWheel,RBWheel;
+
   public void robotInit() {
     LFTalon = new TalonSRX(0);
     RFTalon = new TalonSRX(1);
@@ -49,13 +52,20 @@ public class Robot extends TimedRobot {
     config.width = 27.5;
     config.length = 31;
 
-    config.wheels[0] = new Wheel(LFTalon, LFVictor, 1.0);
-    config.wheels[1] = new Wheel(RFTalon, RFVictor, 1.0);
-    config.wheels[2] = new Wheel(BLTalon, BLVictor, 1.0);
-    config.wheels[3] = new Wheel(BRTalon, BRVictor, 1.0);
+    LFWheel = new Wheel(LFTalon, LFVictor, 1.0);
+    RFWheel = new Wheel(RFTalon, RFVictor, 1.0);
+    LBWheel = new Wheel(BLTalon, BLVictor, 1.0);
+    RBWheel = new Wheel(BRTalon, BRVictor, 1.0);
+    wheels = new Wheel[]{
+      LFWheel, RFWheel, LBWheel, RBWheel
+    };
+    config.wheels = wheels;
 
     Swerve = new SwerveDrive(config);
     Stick = new Joystick(1);
+
+    Controller = new XboxController(2);
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -65,6 +75,9 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     Swerve.drive(Stick.getY(), Stick.getX(), Stick.getZ());
+
+    
+
   }
 
   @Override

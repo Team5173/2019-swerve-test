@@ -3,16 +3,16 @@ package frc.robot;
 import static com.ctre.phoenix.motorcontrol.ControlMode.*;
 import static frc.robot.SwerveDrive.DriveMode.TELEOP;
 
-import com.ctre.phoenix.ErrorCode;
+//import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import edu.wpi.first.wpilibj.VictorSP;
 import frc.robot.SwerveDrive.DriveMode;
-import frc.robot.Talon.Errors;
+//import frc.robot.Talon.Errors;
 
 /**
  * Controls a swerve drive wheel azimuth and drive motors.
@@ -32,7 +32,7 @@ import frc.robot.Talon.Errors;
 public class Wheel {
   private static final int TICKS = 4096;
 
-  private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
+  //private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
   private final double driveSetpointMax;
   private final VictorSP driveVictor;
   private final TalonSRX azimuthTalon;
@@ -58,8 +58,8 @@ public class Wheel {
     setDriveMode(TELEOP);
 
     //logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveVictor.getDeviceID());
-    logger.debug("driveSetpointMax = {}", driveSetpointMax);
-    if (driveSetpointMax == 0.0) logger.warn("driveSetpointMax may not have been configured");
+    //logger.debug("driveSetpointMax = {}", driveSetpointMax);
+    //if (driveSetpointMax == 0.0) logger.warn("driveSetpointMax may not have been configured");
   }
 
   /**
@@ -147,12 +147,12 @@ public class Wheel {
    */
   public void setAzimuthZero(int zero) {
     if (azimuthTalon == null) {
-      logger.error("azimuth Talon not present, aborting setAzimuthZero(int)");
+      //logger.error("azimuth Talon not present, aborting setAzimuthZero(int)");
       return;
     }
     int azimuthSetpoint = getAzimuthAbsolutePosition() - zero;
-    ErrorCode err = azimuthTalon.setSelectedSensorPosition(azimuthSetpoint, 0, 10);
-    Errors.check(err, logger);
+    //ErrorCode err = azimuthTalon.setSelectedSensorPosition(azimuthSetpoint, 0, 10);
+    //Errors.check(err, logger);
     azimuthTalon.set(MotionMagic, azimuthSetpoint);
   }
 
@@ -163,7 +163,7 @@ public class Wheel {
    */
   public int getAzimuthAbsolutePosition() {
     if (azimuthTalon == null) {
-      logger.error("azimuth Talon not present, returning 0 for getAzimuthAbsolutePosition()");
+      //logger.error("azimuth Talon not present, returning 0 for getAzimuthAbsolutePosition()");
       return 0;
     }
     return azimuthTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;

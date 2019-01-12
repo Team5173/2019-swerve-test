@@ -46,7 +46,7 @@ repositories {
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.25'
+    //implementation 'org.slf4j:slf4j-api:1.7.25'
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     compile 'com.github.juchong:ADIS16448-RoboRIO-Driver:master-SNAPSHOT'

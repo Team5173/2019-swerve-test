@@ -2,8 +2,8 @@ package frc.robot;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.Preferences;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import frc.robot.Talon.Errors;
 
 /**
@@ -20,7 +20,7 @@ import frc.robot.Talon.Errors;
 @SuppressWarnings("unused")
 public class SwerveDrive {
 
-  private static final Logger logger = LoggerFactory.getLogger(SwerveDrive.class);
+  //private static final Logger logger = LoggerFactory.getLogger(SwerveDrive.class);
   private static final int WHEEL_COUNT = 4;
   final ADIS16448_IMU gyro;
   private final double kLengthComponent;
@@ -33,12 +33,12 @@ public class SwerveDrive {
   public SwerveDrive(SwerveDriveConfig config) {
     gyro = config.gyro;
     wheels = config.wheels;
-    logger.info("field orientation driving is {}", gyro == null ? "DISABLED" : "ENABLED");
+    //logger.info("field orientation driving is {}", gyro == null ? "DISABLED" : "ENABLED");
 
     final boolean summarizeErrors = config.summarizeTalonErrors;
     Errors.setSummarized(summarizeErrors);
     Errors.setCount(0);
-    logger.debug("TalonSRX configuration errors summarized = {}", summarizeErrors);
+    //logger.debug("TalonSRX configuration errors summarized = {}", summarizeErrors);
 
     double length = config.length;
     double width = config.width;
@@ -54,14 +54,14 @@ public class SwerveDrive {
       //double gyroPeriod = 1.0 / rate;
       kGyroRateCorrection = (1);
     } else {
-      logger.warn("gyro is missing or not enabled");
+      //logger.warn("gyro is missing or not enabled");
       kGyroRateCorrection = 0;
     }
 
-    logger.debug("length = {}", length);
-    logger.debug("width = {}", width);
-    logger.debug("enableGyroLogging = {}", config.gyroLoggingEnabled);
-    logger.debug("gyroRateCorrection = {}", kGyroRateCorrection);
+    //logger.debug("length = {}", length);
+    //logger.debug("width = {}", width);
+    //logger.debug("enableGyroLogging = {}", config.gyroLoggingEnabled);
+    //logger.debug("gyroRateCorrection = {}", kGyroRateCorrection);
   }
 
   /**
@@ -83,7 +83,7 @@ public class SwerveDrive {
     for (Wheel wheel : wheels) {
       wheel.setDriveMode(driveMode);
     }
-    logger.info("drive mode = {}", driveMode);
+    //logger.info("drive mode = {}", driveMode);
   }
 
   /**
@@ -161,7 +161,7 @@ public class SwerveDrive {
     for (Wheel wheel : wheels) {
       wheel.stop();
     }
-    logger.info("stopped all wheels");
+    //logger.info("stopped all wheels");
   }
 
   /**
@@ -179,7 +179,7 @@ public class SwerveDrive {
     for (int i = 0; i < WHEEL_COUNT; i++) {
       int position = wheels[i].getAzimuthAbsolutePosition();
       prefs.putInt(getPreferenceKeyForWheel(i), position);
-      logger.info("azimuth {}: saved zero = {}", i, position);
+      //logger.info("azimuth {}: saved zero = {}", i, position);
     }
   }
 
@@ -196,10 +196,10 @@ public class SwerveDrive {
     for (int i = 0; i < WHEEL_COUNT; i++) {
       int position = prefs.getInt(getPreferenceKeyForWheel(i), 0);
       wheels[i].setAzimuthZero(position);
-      logger.info("azimuth {}: loaded zero = {}", i, position);
+      //logger.info("azimuth {}: loaded zero = {}", i, position);
     }
     int errorCount = Errors.getCount();
-    if (errorCount > 0) logger.error("TalonSRX set azimuth zero error count = {}", errorCount);
+    //if (errorCount > 0) logger.error("TalonSRX set azimuth zero error count = {}", errorCount);
   }
 
   /**
