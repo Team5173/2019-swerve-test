@@ -46,8 +46,8 @@ public class Robot extends TimedRobot {
     BRVictor = new VictorSP(3);
 
     gyro = new ADIS16448_IMU();
-    gyro.calibrate();
     config = new SwerveDriveConfig();
+
     config.gyro = gyro;
     config.width = 27.5;
     config.length = 31;
@@ -74,10 +74,22 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    Swerve.drive(Stick.getY(), Stick.getX(), Stick.getZ());
+    Swerve.drive(Stick.getY(), Stick.getX(), Stick.getZ()); 
 
+    SmartDashboard.putNumber("Gyro-X", gyro.getAngleX());
+    SmartDashboard.putNumber("Gyro-Y", gyro.getAngleY());
+    SmartDashboard.putNumber("Gyro-Z", gyro.getAngleZ());
     
-
+    SmartDashboard.putNumber("Accel-X", gyro.getAccelX());
+    SmartDashboard.putNumber("Accel-Y", gyro.getAccelY());
+    SmartDashboard.putNumber("Accel-Z", gyro.getAccelZ());
+    
+    SmartDashboard.putNumber("Pitch", gyro.getPitch());
+    SmartDashboard.putNumber("Roll", gyro.getRoll());
+    SmartDashboard.putNumber("Yaw", gyro.getYaw());
+    
+    SmartDashboard.putNumber("Pressure: ", gyro.getBarometricPressure());
+    SmartDashboard.putNumber("Temperature: ", gyro.getTemperature());
   }
 
   @Override
