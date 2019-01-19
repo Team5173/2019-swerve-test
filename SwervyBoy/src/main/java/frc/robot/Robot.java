@@ -13,8 +13,6 @@ import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -30,15 +28,10 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private final Compressor c = new Compressor(1);
   DoubleSolenoid wooow = new DoubleSolenoid (1,2);
   DoubleSolenoid woow = new DoubleSolenoid (1,2);
   DoubleSolenoid wow = new DoubleSolenoid (1,2);
   XboxController controller = new XboxController(0);
-
-  {
-
-    c.start();
 
   XboxController Controller;
   Joystick Stick;
@@ -167,9 +160,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     if(controller.getAButton() == true) {
       wow.set(DoubleSolenoid.Value.kForward);
-    } else {
-
-      if(controller.getAButton() && wow.(DoubleSolenoid.Value.kForward) == true);
     }
     if(controller.getBButton() == true) {
       woow.set(DoubleSolenoid.Value.kForward);
