@@ -43,7 +43,18 @@ public class Robot extends TimedRobot {
     RFTalon = new TalonSRX(1);
     BLTalon = new TalonSRX(2);
     BRTalon = new TalonSRX(3);
-
+  
+    /*****************************************************************
+    * DO NOT ENABLE THE FOLLOWING UNTIL TUNING IS COMPLETE AND THE 
+    *  SwerveTalonConfig class has been updated
+    ******************************************************************
+    // Apply the default config to the Talons
+    var swerveTalonCfg = new SwerveTalonConfig();
+    swerveTalonCfg.applyConfig(LFTalon, RFTalon);
+    swerveTalonCfg.applyConfig(BLTalon);
+    swerveTalonCfg.applyConfig(BRTalon);
+    */
+  
     LFVictor = new VictorSP(0);
     RFVictor = new VictorSP(1);
     BLVictor = new VictorSP(2);

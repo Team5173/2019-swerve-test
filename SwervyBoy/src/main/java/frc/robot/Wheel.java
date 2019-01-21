@@ -30,7 +30,9 @@ import frc.robot.SwerveDrive.DriveMode;
  * drive Talon IDs in the range 10-13.
  */
 public class Wheel {
-  private static final int TICKS = 4096;
+  //private static final int TICKS = 4096;
+  // Our mechanism is 3.75:1 reduction (60T:16T) after the CTRE encoder. 60/16*4096=15360
+  private static final int TICKS = 15360;                                     
 
   //private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
   private final double driveSetpointMax;
