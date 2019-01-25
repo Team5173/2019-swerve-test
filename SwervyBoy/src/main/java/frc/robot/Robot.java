@@ -4,10 +4,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.VictorSP;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.wpilibj.Utility;
+
+//import edu.wpi.first.wpilibj.Compressor;
 
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
@@ -17,11 +21,11 @@ public class Robot extends TimedRobot {
 
   XboxController Controller;
   Joystick Stick;
-
-  SwerveDriveConfig config;
+  SwerveDriveConfig Config;
   SwerveDrive Swerve;
+  RobotController user;
 
-  Compressor Air;
+  //Compressor Air;
 
   VictorSP LFVictor;
   VictorSP RFVictor;
@@ -39,43 +43,33 @@ public class Robot extends TimedRobot {
   Wheel LFWheel,RFWheel,LBWheel,RBWheel;
 
   public void robotInit() {
+
+    RobotController.getUserButton();
+
     LFTalon = new TalonSRX(0);
     RFTalon = new TalonSRX(1);
     BLTalon = new TalonSRX(2);
     BRTalon = new TalonSRX(3);
-  
-    /*****************************************************************
-    * DO NOT ENABLE THE FOLLOWING UNTIL TUNING IS COMPLETE AND THE 
-    *  SwerveTalonConfig class has been updated
-    ******************************************************************
-    // Apply the default config to the Talons
-    var swerveTalonCfg = new SwerveTalonConfig();
-    swerveTalonCfg.applyConfig(LFTalon, RFTalon);
-    swerveTalonCfg.applyConfig(BLTalon);
-    swerveTalonCfg.applyConfig(BRTalon);
-    */
-  
+
     LFVictor = new VictorSP(0);
     RFVictor = new VictorSP(1);
     BLVictor = new VictorSP(2);
     BRVictor = new VictorSP(3);
 
-    Swerve = new SwerveDrive(config);
-
     Stick = new Joystick(1);
     Controller = new XboxController(2);
 
-    Air = new Compressor();
+    //Air = new Compressor();
 
     gyro = new ADIS16448_IMU();
 
-    config = new SwerveDriveConfig();
+    Config = new SwerveDriveConfig();
 
-    config.gyro = gyro;
+    Config.gyro = gyro;
     gyro.reset();
 
-    config.width = 27.5;
-    config.length = 31;
+    Config.width = 27.5;
+    Config.length = 31;
 
     LFWheel = new Wheel(LFTalon, LFVictor, 1.0);
     RFWheel = new Wheel(RFTalon, RFVictor, 1.0);
@@ -88,7 +82,9 @@ public class Robot extends TimedRobot {
 
     };
 
-    config.wheels = wheels;
+    Config.wheels = wheels;
+
+    Swerve = new SwerveDrive(Config);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
@@ -97,9 +93,16 @@ public class Robot extends TimedRobot {
 
   public void robotPeriodic() {
 
+   /* {
+      Air.start();
+    }*/
+
     Swerve.drive(Stick.getY(), Stick.getX(), Stick.getZ()); 
 
     SmartDashboard.putNumber("Gyro angle", gyro.getAngle());
+    SmartDashboard.putNumber("Gyro X", gyro.getAngleX());
+    SmartDashboard.putNumber("Gyro Y", gyro.getAngleY());
+    SmartDashboard.putNumber("Gyro Z", gyro.getAngleZ());
 
   }
 
