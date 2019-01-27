@@ -3,6 +3,7 @@ package frc.robot;
 import static com.ctre.phoenix.motorcontrol.ControlMode.*;
 import static frc.robot.SwerveDrive.DriveMode.TELEOP;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 //import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import java.util.Objects;
@@ -89,7 +90,8 @@ public class Wheel {
       drive = -drive;
     }
 
-    azimuthTalon.set(MotionMagic, azimuthPosition + azimuthError);
+    //azimuthTalon.set(MotionMagic, azimuthPosition + azimuthError);
+    azimuthTalon.set(ControlMode.Position, azimuthPosition + azimuthError);
     currentDriver.accept(drive);
   }
 
@@ -99,7 +101,7 @@ public class Wheel {
    * @param position position in encoder ticks.
    */
   public void setAzimuthPosition(int position) {
-    azimuthTalon.set(MotionMagic, position);
+    azimuthTalon.set(ControlMode.Position, position);
   }
 
   public void disableAzimuth() {
@@ -138,7 +140,7 @@ public class Wheel {
    * current position in case the wheel has been manually rotated away from its previous setpoint.
    */
   public void stop() {
-    azimuthTalon.set(MotionMagic, azimuthTalon.getSelectedSensorPosition(0));
+    azimuthTalon.set(ControlMode.Position, azimuthTalon.getSelectedSensorPosition(0));
     currentDriver.accept(0d);
   }
 
@@ -155,7 +157,7 @@ public class Wheel {
     int azimuthSetpoint = getAzimuthAbsolutePosition() - zero;
     //ErrorCode err = azimuthTalon.setSelectedSensorPosition(azimuthSetpoint, 0, 10);
     //Errors.check(err, logger);
-    azimuthTalon.set(MotionMagic, azimuthSetpoint);
+    azimuthTalon.set(ControlMode.Position, azimuthSetpoint);
   }
 
   /**

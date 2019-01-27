@@ -111,7 +111,7 @@ public class SwerveDrive {
     // Use gyro for field-oriented drive. We use getAngle instead of getYaw to enable arbitrary
     // autonomous starting positions.
     if (gyro != null) {
-      double angle = gyro.getAngle();
+      double angle = gyro.getAngleZ();
       angle += gyro.getRate() * kGyroRateCorrection;
       angle = Math.IEEEremainder(angle, 360.0);
 

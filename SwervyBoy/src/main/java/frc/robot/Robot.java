@@ -21,11 +21,13 @@ public class Robot extends TimedRobot {
 
   XboxController Controller;
   Joystick Stick;
+  Joystick Stick2;
   SwerveDriveConfig Config;
   SwerveDrive Swerve;
-  RobotController user;
 
   //Compressor Air;
+
+  
 
   VictorSP LFVictor;
   VictorSP RFVictor;
@@ -42,9 +44,9 @@ public class Robot extends TimedRobot {
   Wheel[] wheels;
   Wheel LFWheel,RFWheel,LBWheel,RBWheel;
 
-  public void robotInit() {
+  boolean lastUserButton;
 
-    RobotController.getUserButton();
+  public void robotInit() {
 
     LFTalon = new TalonSRX(0);
     RFTalon = new TalonSRX(1);
@@ -57,6 +59,7 @@ public class Robot extends TimedRobot {
     BRVictor = new VictorSP(3);
 
     Stick = new Joystick(1);
+    Stick2 = new Joystick(2);
     Controller = new XboxController(2);
 
     //Air = new Compressor();
@@ -64,6 +67,8 @@ public class Robot extends TimedRobot {
     gyro = new ADIS16448_IMU();
 
     Config = new SwerveDriveConfig();
+
+    RobotController.getUserButton();
 
     Config.gyro = gyro;
     gyro.reset();
@@ -83,7 +88,10 @@ public class Robot extends TimedRobot {
     };
 
     Config.wheels = wheels;
-
+    LFTalon.setSensorPhase(false);
+    RFTalon.setSensorPhase(false);
+    BLTalon.setSensorPhase(false);
+    BRTalon.setSensorPhase(false);
     Swerve = new SwerveDrive(Config);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -91,18 +99,33 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
+   
   public void robotPeriodic() {
 
    /* {
       Air.start();
-    }*/
+    } */
 
-    Swerve.drive(Stick.getY(), Stick.getX(), Stick.getZ()); 
+    Swerve.drive(Stick2.getY(), Stick2.getX(), Stick.getZ());
 
     SmartDashboard.putNumber("Gyro angle", gyro.getAngle());
     SmartDashboard.putNumber("Gyro X", gyro.getAngleX());
     SmartDashboard.putNumber("Gyro Y", gyro.getAngleY());
     SmartDashboard.putNumber("Gyro Z", gyro.getAngleZ());
+
+  }
+
+  @Override
+  public void disabledPeriodic() {
+    super.disabledPeriodic();
+
+    if(RobotController.getUserButton() && !lastUserButton){
+      lastUserButton = true;
+      Swerve.saveAzimuthPositions();
+    }
+    else{
+      lastUserButton = false;
+    }
 
   }
 
