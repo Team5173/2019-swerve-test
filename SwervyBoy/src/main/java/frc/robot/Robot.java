@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.VictorSP;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.shuffleboard.*;
-import edu.wpi.first.wpilibj.Utility;
 
 //import edu.wpi.first.wpilibj.Compressor;
 
@@ -68,13 +67,14 @@ public class Robot extends TimedRobot {
 
     Config = new SwerveDriveConfig();
 
-    RobotController.getUserButton();
-
-    Config.gyro = gyro;
+    /* For field-oriented drive, set gyro reference. For robot-relative drive, set to null */
+    // TODO - Get robot-relative drive working first
+    Config.gyro = null;       
+    //Config.gyro = gyro;                                                       
     gyro.reset();
 
-    Config.width = 27.5;
-    Config.length = 31;
+    Config.width = 18.5;
+    Config.length = 20;
 
     LFWheel = new Wheel(LFTalon, LFVictor, 1.0);
     RFWheel = new Wheel(RFTalon, RFVictor, 1.0);
@@ -93,6 +93,13 @@ public class Robot extends TimedRobot {
     BLTalon.setSensorPhase(false);
     BRTalon.setSensorPhase(false);
     Swerve = new SwerveDrive(Config);
+
+    /* Set the azimuth zero now, when robot boots up. Will not have desired
+    *  effect if wheels aren't within 24 deg of straight. Might be a good
+    *  idea to make a control for this in case we forgot to straighten the 
+    *  wheels at power-up
+    */
+    Swerve.zeroAzimuthEncoders();
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
@@ -122,6 +129,8 @@ public class Robot extends TimedRobot {
     if(RobotController.getUserButton() && !lastUserButton){
       lastUserButton = true;
       Swerve.saveAzimuthPositions();
+      // Might as well re-zero the wheels now
+      Swerve.zeroAzimuthEncoders();
     }
     else{
       lastUserButton = false;

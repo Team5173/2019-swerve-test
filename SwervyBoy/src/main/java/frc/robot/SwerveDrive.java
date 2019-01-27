@@ -112,7 +112,7 @@ public class SwerveDrive {
     // autonomous starting positions.
     if (gyro != null) {
       double angle = gyro.getAngleZ();
-      angle += gyro.getRate() * kGyroRateCorrection;
+      angle += gyro.getRateZ() * kGyroRateCorrection;
       angle = Math.IEEEremainder(angle, 360.0);
 
       angle = Math.toRadians(angle);

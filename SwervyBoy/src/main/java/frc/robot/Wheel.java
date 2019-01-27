@@ -1,10 +1,10 @@
 package frc.robot;
 
-import static com.ctre.phoenix.motorcontrol.ControlMode.*;
+//import static com.ctre.phoenix.motorcontrol.ControlMode.*;
 import static frc.robot.SwerveDrive.DriveMode.TELEOP;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-//import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
@@ -33,7 +33,9 @@ import frc.robot.SwerveDrive.DriveMode;
 public class Wheel {
   //private static final int TICKS = 4096;
   // Our mechanism is 3.75:1 reduction (60T:16T) after the CTRE encoder. 60/16*4096=15360
-  private static final int TICKS = 15360;                                     
+  private static final int TICKS = 15360;
+  private static final ControlMode CONTROL_MODE = ControlMode.Position;
+  //private static final ControlMode CONTROL_MODE = ControlMode.MotionMagic;                                  
 
   //private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
   private final double driveSetpointMax;
@@ -91,7 +93,7 @@ public class Wheel {
     }
 
     //azimuthTalon.set(MotionMagic, azimuthPosition + azimuthError);
-    azimuthTalon.set(ControlMode.Position, azimuthPosition + azimuthError);
+    azimuthTalon.set(CONTROL_MODE, azimuthPosition + azimuthError);
     currentDriver.accept(drive);
   }
 
@@ -101,7 +103,7 @@ public class Wheel {
    * @param position position in encoder ticks.
    */
   public void setAzimuthPosition(int position) {
-    azimuthTalon.set(ControlMode.Position, position);
+    azimuthTalon.set(CONTROL_MODE, position);
   }
 
   public void disableAzimuth() {
@@ -140,12 +142,15 @@ public class Wheel {
    * current position in case the wheel has been manually rotated away from its previous setpoint.
    */
   public void stop() {
-    azimuthTalon.set(ControlMode.Position, azimuthTalon.getSelectedSensorPosition(0));
+    azimuthTalon.set(CONTROL_MODE, azimuthTalon.getSelectedSensorPosition(0));
     currentDriver.accept(0d);
   }
 
   /**
-   * Set the azimuthTalon encoder relative to wheel zero alignment position.
+   * Set the azimuthTalon encoder relative to wheel zero alignment position. Since the relative encoder
+   * rolls over multiple times within one rotation, this will only work if called when wheels are 
+   * relatively straight (<= 24­° of zero position in either direction). If this is called when the wheel
+   * isn't positioned close to straight ahead, bad things will happen.
    *
    * @param zero encoder position (in ticks) where wheel is zeroed.
    */
@@ -154,10 +159,23 @@ public class Wheel {
       //logger.error("azimuth Talon not present, aborting setAzimuthZero(int)");
       return;
     }
-    int azimuthSetpoint = getAzimuthAbsolutePosition() - zero;
+
+    int curPos = getAzimuthAbsolutePosition();
+    
+    if (Math.abs(curPos - zero) > 2048)
+    {   // Assume absolute encoder rolls over in small distance between "almost straight", and straight
+        if (curPos > zero) 
+            curPos -= 4096;
+        else 
+            curPos += 4096;
+    }
+
+    int azimuthSetpoint = curPos - zero;
+    // Set the current position of the relative encoder
+    azimuthTalon.setSelectedSensorPosition(azimuthSetpoint);
     //ErrorCode err = azimuthTalon.setSelectedSensorPosition(azimuthSetpoint, 0, 10);
     //Errors.check(err, logger);
-    azimuthTalon.set(ControlMode.Position, azimuthSetpoint);
+    //azimuthTalon.set(CONTROL_MODE, azimuthSetpoint);
   }
 
   /**
