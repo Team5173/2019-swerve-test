@@ -26,8 +26,6 @@ public class Robot extends TimedRobot {
 
   //Compressor Air;
 
-  
-
   VictorSP LFVictor;
   VictorSP RFVictor;
   VictorSP BLVictor;
@@ -59,7 +57,7 @@ public class Robot extends TimedRobot {
 
     Stick = new Joystick(1);
     Stick2 = new Joystick(2);
-    Controller = new XboxController(2);
+    Controller = new XboxController(3);
 
     //Air = new Compressor();
 

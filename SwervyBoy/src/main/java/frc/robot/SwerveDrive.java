@@ -55,7 +55,7 @@ public class SwerveDrive {
       kGyroRateCorrection = (1);
     } else {
       //logger.warn("gyro is missing or not enabled");
-      kGyroRateCorrection = 0;
+      kGyroRateCorrection = 1;
     }
 
     //logger.debug("length = {}", length);
@@ -112,7 +112,7 @@ public class SwerveDrive {
     // autonomous starting positions.
     if (gyro != null) {
       double angle = gyro.getAngleZ();
-      angle += gyro.getRateZ() * kGyroRateCorrection;
+     //angle += gyro.getRateZ() * kGyroRateCorrection;
       angle = Math.IEEEremainder(angle, 360.0);
 
       angle = Math.toRadians(angle);
