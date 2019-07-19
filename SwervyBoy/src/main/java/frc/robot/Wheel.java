@@ -6,6 +6,8 @@ import static frc.robot.SwerveDrive.DriveMode.TELEOP;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
 //import org.slf4j.Logger;
@@ -39,7 +41,7 @@ public class Wheel {
 
   //private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
   private final double driveSetpointMax;
-  private final VictorSP driveVictor;
+  private final CANSparkMax driveSparkMax;
   private final TalonSRX azimuthTalon;
   protected DoubleConsumer currentDriver;
 
@@ -55,10 +57,10 @@ public class Wheel {
    * @param drive the configured drive TalonSRX
    * @param driveSetpointMax scales closed-loop drive output to this value when drive setpoint = 1.0
    */
-  public Wheel(TalonSRX azimuth, VictorSP drive, double driveSetpointMax) {
+  public Wheel(TalonSRX azimuth, CANSparkMax drive, double driveSetpointMax) {
     this.driveSetpointMax = driveSetpointMax;
     azimuthTalon = Objects.requireNonNull(azimuth);
-    driveVictor = Objects.requireNonNull(drive);
+    driveSparkMax = Objects.requireNonNull(drive);
 
     setDriveMode(TELEOP);
 
@@ -127,12 +129,12 @@ public class Wheel {
     switch (driveMode) {
       case OPEN_LOOP:
       case TELEOP:
-        currentDriver = (setpoint) -> driveVictor.set(setpoint);
+        currentDriver = (setpoint) -> driveSparkMax.set(setpoint);
         break;
       case CLOSED_LOOP:
       case TRAJECTORY:
       case AZIMUTH:
-        currentDriver = (setpoint) -> driveVictor.set(setpoint);
+        currentDriver = (setpoint) -> driveSparkMax.set(setpoint);
         break;
     }
   }
@@ -205,8 +207,8 @@ public class Wheel {
    *
    * @return drive Talon instance used by wheel
    */
-  public VictorSP getVictorSP() {
-    return driveVictor;
+  public CANSparkMax getVictorSP() {
+    return driveSparkMax;
   }
 
   public double getDriveSetpointMax() {
@@ -219,7 +221,7 @@ public class Wheel {
         + "azimuthTalon="
         + azimuthTalon
         + ", driveVictor="
-        + driveVictor
+        + driveSparkMax
         + ", driveSetpointMax="
         + driveSetpointMax
         + '}';

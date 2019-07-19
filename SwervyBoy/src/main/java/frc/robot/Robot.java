@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.VictorSP;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 //import edu.wpi.first.wpilibj.Compressor;
 
@@ -26,15 +28,15 @@ public class Robot extends TimedRobot {
 
   //Compressor Air;
 
-  VictorSP LFVictor;
-  VictorSP RFVictor;
-  VictorSP BLVictor;
-  VictorSP BRVictor;
-
   TalonSRX LFTalon;
   TalonSRX RFTalon;
   TalonSRX BLTalon;
   TalonSRX BRTalon;
+
+  CANSparkMax LFSparkMax;
+  CANSparkMax RFSparkMax;
+  CANSparkMax BLSparkMax;
+  CANSparkMax BRSparkMax;
 
   ADIS16448_IMU gyro;
 
@@ -50,10 +52,10 @@ public class Robot extends TimedRobot {
     BLTalon = new TalonSRX(2);
     BRTalon = new TalonSRX(3);
 
-    LFVictor = new VictorSP(0);
-    RFVictor = new VictorSP(1);
-    BLVictor = new VictorSP(2);
-    BRVictor = new VictorSP(3);
+    LFSparkMax = new CANSparkMax(0, MotorType.kBrushless);
+    RFSparkMax = new CANSparkMax(1, MotorType.kBrushless);
+    BLSparkMax = new CANSparkMax(2, MotorType.kBrushless);
+    BRSparkMax = new CANSparkMax(3, MotorType.kBrushless);
 
     Stick = new Joystick(1);
     Stick2 = new Joystick(2);
@@ -74,10 +76,10 @@ public class Robot extends TimedRobot {
     Config.width = 18.5;
     Config.length = 20;
 
-    LFWheel = new Wheel(LFTalon, LFVictor, 1.0);
-    RFWheel = new Wheel(RFTalon, RFVictor, 1.0);
-    LBWheel = new Wheel(BLTalon, BLVictor, 1.0);
-    RBWheel = new Wheel(BRTalon, BRVictor, 1.0);
+    LFWheel = new Wheel(LFTalon, LFSparkMax, 1.0);
+    RFWheel = new Wheel(RFTalon, RFSparkMax, 1.0);
+    LBWheel = new Wheel(BLTalon, BLSparkMax, 1.0);
+    RBWheel = new Wheel(BRTalon, BRSparkMax, 1.0);
 
     wheels = new Wheel[]{
 
