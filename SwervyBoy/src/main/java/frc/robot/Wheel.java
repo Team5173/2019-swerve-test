@@ -6,14 +6,13 @@ import static frc.robot.SwerveDrive.DriveMode.TELEOP;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.Spark;
 
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
-import edu.wpi.first.wpilibj.VictorSP;
 import frc.robot.SwerveDrive.DriveMode;
 //import frc.robot.Talon.Errors;
 
@@ -41,7 +40,7 @@ public class Wheel {
 
   //private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
   private final double driveSetpointMax;
-  private final CANSparkMax driveSparkMax;
+  private final Spark driveSpark;
   private final TalonSRX azimuthTalon;
   protected DoubleConsumer currentDriver;
 
@@ -57,14 +56,14 @@ public class Wheel {
    * @param drive the configured drive TalonSRX
    * @param driveSetpointMax scales closed-loop drive output to this value when drive setpoint = 1.0
    */
-  public Wheel(TalonSRX azimuth, CANSparkMax drive, double driveSetpointMax) {
+  public Wheel(TalonSRX azimuth, Spark drive, double driveSetpointMax) {
     this.driveSetpointMax = driveSetpointMax;
     azimuthTalon = Objects.requireNonNull(azimuth);
-    driveSparkMax = Objects.requireNonNull(drive);
+    driveSpark = Objects.requireNonNull(drive);
 
     setDriveMode(TELEOP);
 
-    //logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveVictor.getDeviceID());
+    //logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveSpark.getDeviceID());
     //logger.debug("driveSetpointMax = {}", driveSetpointMax);
     //if (driveSetpointMax == 0.0) logger.warn("driveSetpointMax may not have been configured");
   }
@@ -129,12 +128,12 @@ public class Wheel {
     switch (driveMode) {
       case OPEN_LOOP:
       case TELEOP:
-        currentDriver = (setpoint) -> driveSparkMax.set(setpoint);
+        currentDriver = (setpoint) -> driveSpark.set(setpoint);
         break;
       case CLOSED_LOOP:
       case TRAJECTORY:
       case AZIMUTH:
-        currentDriver = (setpoint) -> driveSparkMax.set(setpoint);
+        currentDriver = (setpoint) -> driveSpark.set(setpoint);
         break;
     }
   }
@@ -207,8 +206,8 @@ public class Wheel {
    *
    * @return drive Talon instance used by wheel
    */
-  public CANSparkMax getVictorSP() {
-    return driveSparkMax;
+  public Spark getSpark() {
+    return driveSpark;
   }
 
   public double getDriveSetpointMax() {
@@ -220,8 +219,8 @@ public class Wheel {
     return "Wheel{"
         + "azimuthTalon="
         + azimuthTalon
-        + ", driveVictor="
-        + driveSparkMax
+        + ", driveSpark="
+        + driveSpark
         + ", driveSetpointMax="
         + driveSetpointMax
         + '}';
