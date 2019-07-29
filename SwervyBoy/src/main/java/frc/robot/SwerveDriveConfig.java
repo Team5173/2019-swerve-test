@@ -15,7 +15,7 @@ public class SwerveDriveConfig {
   public Wheel[] wheels;
 
   /** Wheel base length from front to rear of robot. */
-  public double length = 20.0;
+  public double length = 21.0;
 
   /** Wheel base width from left to right of robot. */
   public double width = 18.5;
