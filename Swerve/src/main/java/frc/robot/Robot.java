@@ -55,6 +55,18 @@ public class Robot extends TimedRobot {
     BLSparkMax = new Spark(0);
     BRSparkMax = new Spark(2);
 
+    SmartDashboard.putNumber("DriveX", 0);
+    SmartDashboard.putNumber("DriveY", 0);
+    SmartDashboard.putNumber("Rotate", 0);
+
+
+    
+    Shuffleboard.getTab("Angles").add("Wheel RF", 1).withWidget(BuiltInWidgets.kGyro).getEntry();
+    Shuffleboard.getTab("Angles").add("Wheel LF", 0).withWidget(BuiltInWidgets.kGyro).getEntry();
+    Shuffleboard.getTab("Angles").add("Wheel BL", 2).withWidget(BuiltInWidgets.kGyro).getEntry();
+    Shuffleboard.getTab("Angles").add("Wheel BR", 3).withWidget(BuiltInWidgets.kGyro).getEntry();
+    
+
     Stick = new Joystick(1);
     Stick2 = new Joystick(2);
     Controller = new XboxController(3);
@@ -81,7 +93,7 @@ public class Robot extends TimedRobot {
 
     wheels = new Wheel[]{
 
-      LFWheel, RFWheel, LBWheel, RBWheel
+      LBWheel, RBWheel, LFWheel, RFWheel
 
     };
 
@@ -99,6 +111,8 @@ public class Robot extends TimedRobot {
     */
     Swerve.zeroAzimuthEncoders();
 
+    
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -110,7 +124,7 @@ public class Robot extends TimedRobot {
    /* {
       Air.start();
     } */
-
+    //Swerve.drive(SmartDashboard.getNumber("DriveY", 0), SmartDashboard.getNumber("DriveX", 0), SmartDashboard.getNumber("Rotate", 0));
     Swerve.drive(Stick2.getY(), Stick2.getX(), Stick.getZ());
 
     SmartDashboard.putNumber("Gyro angle", gyro.getAngle());
@@ -126,7 +140,7 @@ public class Robot extends TimedRobot {
 
     if(RobotController.getUserButton() && !lastUserButton){
       lastUserButton = true;
-      Swerve.saveAzimuthPositions();
+      //Swerve.saveAzimuthPositions();
       // Might as well re-zero the wheels now
       Swerve.zeroAzimuthEncoders();
     }
@@ -161,6 +175,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     //Called during Teleop Mode
     }
+  
 
   public void testPeriodic() {
     //Called during TestMode

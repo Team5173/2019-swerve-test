@@ -158,22 +158,15 @@ public class Wheel {
   public void setAzimuthZero(int zero) {
     if (azimuthTalon == null) {
       //logger.error("azimuth Talon not present, aborting setAzimuthZero(int)");
+      
       return;
     }
 
-    int curPos = getAzimuthAbsolutePosition();
-    
-    if (Math.abs(curPos - zero) > 2048)
-    {   // Assume absolute encoder rolls over in small distance between "almost straight", and straight
-        if (curPos > zero) 
-            curPos -= 4096;
-        else 
-            curPos += 4096;
-    }
+    //int curPos = getAzimuthAbsolutePosition();
 
-    int azimuthSetpoint = curPos - zero;
+    //int azimuthSetpoint = curPos - zero;
     // Set the current position of the relative encoder
-    azimuthTalon.setSelectedSensorPosition(azimuthSetpoint);
+    azimuthTalon.setSelectedSensorPosition(zero);
     //ErrorCode err = azimuthTalon.setSelectedSensorPosition(azimuthSetpoint, 0, 10);
     //Errors.check(err, logger);
     //azimuthTalon.set(CONTROL_MODE, azimuthSetpoint);

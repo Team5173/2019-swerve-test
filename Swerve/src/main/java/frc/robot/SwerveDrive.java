@@ -2,9 +2,12 @@ package frc.robot;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import frc.robot.Talon.Errors;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 /**
  * Control a Third Coast swerve drive.
@@ -138,6 +141,11 @@ public class SwerveDrive {
     wa[2] = Math.atan2(a, d) * 0.5 / Math.PI;
     wa[3] = Math.atan2(a, c) * 0.5 / Math.PI;
 
+    SmartDashboard.putNumber("Wheel LF", wa[0]*360);
+    SmartDashboard.putNumber("Wheel RF", wa[1]*360);
+    SmartDashboard.putNumber("Wheel BL", wa[2]*360);
+    SmartDashboard.putNumber("Wheel BR", wa[3]*360);
+
     // normalize wheel speed
     final double maxWheelSpeed = Math.max(Math.max(ws[0], ws[1]), Math.max(ws[2], ws[3]));
     if (maxWheelSpeed > 1.0) {
@@ -194,8 +202,9 @@ public class SwerveDrive {
     Errors.setCount(0);
     Preferences prefs = Preferences.getInstance();
     for (int i = 0; i < WHEEL_COUNT; i++) {
-      int position = prefs.getInt(getPreferenceKeyForWheel(i), 0);
-      wheels[i].setAzimuthZero(position);
+      //int position = prefs.getInt(getPreferenceKeyForWheel(i), 0);
+      
+      wheels[i].setAzimuthZero(0);
       //logger.info("azimuth {}: loaded zero = {}", i, position);
     }
     int errorCount = Errors.getCount();
