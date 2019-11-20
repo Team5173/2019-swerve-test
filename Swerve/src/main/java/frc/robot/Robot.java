@@ -58,14 +58,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("DriveX", 0);
     SmartDashboard.putNumber("DriveY", 0);
     SmartDashboard.putNumber("Rotate", 0);
-
+    SmartDashboard.getNumber("GyroAngleZ", gyro.getAngleZ());
 
     
     Shuffleboard.getTab("Angles").add("Wheel RF", 1).withWidget(BuiltInWidgets.kGyro).getEntry();
     Shuffleboard.getTab("Angles").add("Wheel LF", 0).withWidget(BuiltInWidgets.kGyro).getEntry();
     Shuffleboard.getTab("Angles").add("Wheel BL", 2).withWidget(BuiltInWidgets.kGyro).getEntry();
     Shuffleboard.getTab("Angles").add("Wheel BR", 3).withWidget(BuiltInWidgets.kGyro).getEntry();
-    
+    Shuffleboard.getTab("Gyro Angle").add("Gyro", gyro.getAngleZ()).withWidget(BuiltInWidgets.kGyro);
 
     Stick = new Joystick(1);
     Stick2 = new Joystick(2);
@@ -79,8 +79,8 @@ public class Robot extends TimedRobot {
 
     /* For field-oriented drive, set gyro reference. For robot-relative drive, set to null */
     // TODO - Get robot-relative drive working first
-    Config.gyro = null;       
-    //Config.gyro = gyro;                                                       
+    //Config.gyro = null;       
+    Config.gyro = gyro;                                                       
     gyro.reset();
 
     Config.width = 18.5;
@@ -140,6 +140,7 @@ public class Robot extends TimedRobot {
 
     if(RobotController.getUserButton() && !lastUserButton){
       lastUserButton = true;
+      gyro.reset();
       //Swerve.saveAzimuthPositions();
       // Might as well re-zero the wheels now
       Swerve.zeroAzimuthEncoders();

@@ -51,9 +51,10 @@ public class SwerveDrive {
 
     if (gyro != null) {
       //gyro.enableLogging(config.gyroLoggingEnabled);
+      
       //double robotPeriod = config.robotPeriod;
       //double gyroRateCoeff = config.gyroRateCoeff;
-      //int rate = gyro.getRate();
+      //int rate = gyro.getRateZ();
       //double gyroPeriod = 1.0 / rate;
       kGyroRateCorrection = (1);
     } else {
