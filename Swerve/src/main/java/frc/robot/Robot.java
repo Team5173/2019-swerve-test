@@ -2,7 +2,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.analog.adis16448.frc.ADIS16448_IMU;
+import com.analog.adis16448.frc.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
@@ -55,25 +55,24 @@ public class Robot extends TimedRobot {
     BLSparkMax = new Spark(0);
     BRSparkMax = new Spark(2);
 
+    gyro = new ADIS16448_IMU();
+
     SmartDashboard.putNumber("DriveX", 0);
     SmartDashboard.putNumber("DriveY", 0);
     SmartDashboard.putNumber("Rotate", 0);
-    SmartDashboard.getNumber("GyroAngleZ", gyro.getAngleZ());
+    
 
     
     Shuffleboard.getTab("Angles").add("Wheel RF", 1).withWidget(BuiltInWidgets.kGyro).getEntry();
     Shuffleboard.getTab("Angles").add("Wheel LF", 0).withWidget(BuiltInWidgets.kGyro).getEntry();
     Shuffleboard.getTab("Angles").add("Wheel BL", 2).withWidget(BuiltInWidgets.kGyro).getEntry();
     Shuffleboard.getTab("Angles").add("Wheel BR", 3).withWidget(BuiltInWidgets.kGyro).getEntry();
-    Shuffleboard.getTab("Gyro Angle").add("Gyro", gyro.getAngleZ()).withWidget(BuiltInWidgets.kGyro);
-
+    Shuffleboard.getTab("Angles").add("GyroAngleZ", gyro.getYaw());
     Stick = new Joystick(1);
     Stick2 = new Joystick(2);
     Controller = new XboxController(3);
 
     //Air = new Compressor();
-
-    gyro = new ADIS16448_IMU();
 
     Config = new SwerveDriveConfig();
 
@@ -118,6 +117,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
+  public void teleopInit() {
+
+    gyro.reset();
+  }
+
    
   public void robotPeriodic() {
 
@@ -126,11 +130,6 @@ public class Robot extends TimedRobot {
     } */
     //Swerve.drive(SmartDashboard.getNumber("DriveY", 0), SmartDashboard.getNumber("DriveX", 0), SmartDashboard.getNumber("Rotate", 0));
     Swerve.drive(Stick2.getY(), Stick2.getX(), Stick.getZ());
-
-    SmartDashboard.putNumber("Gyro angle", gyro.getAngle());
-    SmartDashboard.putNumber("Gyro X", gyro.getAngleX());
-    SmartDashboard.putNumber("Gyro Y", gyro.getAngleY());
-    SmartDashboard.putNumber("Gyro Z", gyro.getAngleZ());
 
   }
 
@@ -158,7 +157,6 @@ public class Robot extends TimedRobot {
     System.out.println("Auto selected: " + m_autoSelected);
 
     gyro.reset();
-
   }
 
   public void autonomousPeriodic() {
