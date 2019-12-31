@@ -115,14 +115,32 @@ public class SwerveDrive {
     // Use gyro for field-oriented drive. We use getAngle instead of getYaw to enable arbitrary
     // autonomous starting positions.
     if (gyro != null) {
-      double angle = gyro.getAngleZ();
-     //angle += gyro.getRateZ() * kGyroRateCorrection;
-      angle = Math.IEEEremainder(angle, 360.0);
+      double angle = gyro.getYaw();
+      angle += gyro.getRateZ() * kGyroRateCorrection;
+      //angle = Math.IEEEremainder(angle, 360.0);
+
+      if (angle < -180d) angle += 360d;
+      else if (angle > 180d) angle -= 360d;
 
       angle = Math.toRadians(angle);
       final double temp = forward * Math.cos(angle) + strafe * Math.sin(angle);
+
+      SmartDashboard.putNumber("temp display", temp);
+
       strafe = -forward * Math.sin(angle) + strafe * Math.cos(angle);
+
+      SmartDashboard.putNumber("strafe display", strafe);
+
       forward = temp;
+      
+      SmartDashboard.putNumber("forward display", forward);
+
+      //This is the new swerve drive code that Stryke Force Posted
+
+      /*final double temp = forward * Math.cos(angle) + strafe * Math.sin(angle);
+      strafe = strafe * Math.cos(angle) - forward * Math.sin(angle);
+      forward = temp;*/
+      
     }
 
     final double a = strafe - azimuth * kLengthComponent;
@@ -137,10 +155,10 @@ public class SwerveDrive {
     ws[3] = Math.hypot(a, c);
 
     // wheel azimuth
-    wa[0] = Math.atan2(b, d) * 0.5 / Math.PI;
-    wa[1] = Math.atan2(b, c) * 0.5 / Math.PI;
-    wa[2] = Math.atan2(a, d) * 0.5 / Math.PI;
-    wa[3] = Math.atan2(a, c) * 0.5 / Math.PI;
+    wa[0] = Math.atan2(b, d) * 180 / Math.PI; //Revert back to 0.5 if this does not function
+    wa[1] = Math.atan2(b, c) * 180 / Math.PI; 
+    wa[2] = Math.atan2(a, d) * 180 / Math.PI;
+    wa[3] = Math.atan2(a, c) * 180 / Math.PI;
 
     SmartDashboard.putNumber("Wheel LF", wa[0]*360);
     SmartDashboard.putNumber("Wheel RF", wa[1]*360);
