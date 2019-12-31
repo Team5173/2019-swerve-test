@@ -82,7 +82,7 @@ public class Wheel {
       return;
     }
 
-    azimuth *= -TICKS; // flip azimuth, hardware configuration dependent
+    azimuth *= -TICKS; //flip azimuth, hardware configuration dependent
 
     double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0);
     double azimuthError = Math.IEEEremainder(azimuth - azimuthPosition, TICKS);
