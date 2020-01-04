@@ -115,9 +115,9 @@ public class SwerveDrive {
     // Use gyro for field-oriented drive. We use getAngle instead of getYaw to enable arbitrary
     // autonomous starting positions.
     if (gyro != null) {
-      double angle = gyro.getYaw();
+      double angle = gyro.getAngleZ();
       angle += gyro.getRateZ() * kGyroRateCorrection;
-      //angle = Math.IEEEremainder(angle, 360.0);
+      angle = Math.IEEEremainder(angle, 360.0);
 
       if (angle < -180d) angle += 360d;
       else if (angle > 180d) angle -= 360d;
@@ -156,9 +156,9 @@ public class SwerveDrive {
 
     // wheel azimuth
     wa[0] = Math.atan2(b, d) * 180 / Math.PI; //Revert back to 0.5 if this does not function
-    wa[1] = Math.atan2(b, c) * 180 / Math.PI; 
-    wa[2] = Math.atan2(a, d) * 180 / Math.PI;
-    wa[3] = Math.atan2(a, c) * 180 / Math.PI;
+    wa[1] = Math.atan2(b, c) * 180 / Math.PI; //Do the same as above
+    wa[2] = Math.atan2(a, d) * 180 / Math.PI; //Do the same as above
+    wa[3] = Math.atan2(a, c) * 180 / Math.PI; //Do the same as above
 
     SmartDashboard.putNumber("Wheel LF", wa[0]*360);
     SmartDashboard.putNumber("Wheel RF", wa[1]*360);
